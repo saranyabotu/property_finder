@@ -1,0 +1,1051 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="property-details-page">
+
+    <!-- ================= PAGE HEADER ================= -->
+
+    <div class="property-page-header">
+        <div>
+            <span class="eyebrow">PROPERTY DETAILS</span>
+
+            <h1>Property Details</h1>
+
+            <p>
+                Advertisement information detected from recently updated imagery.
+            </p>
+        </div>
+
+        <div class="recent-badge">
+            <span class="status-dot"></span>
+            Recent Imagery
+        </div>
+    </div>
+
+
+    <!-- ================= PROPERTY OVERVIEW ================= -->
+
+    <div class="property-main-card">
+
+        <!-- PROPERTY IMAGE -->
+
+        <div class="property-image-container">
+
+            <img
+                src="{{ url_for('property_image', filename=property.image_name) }}"
+                alt="Property Advertisement"
+            >
+
+            <div class="image-overlay">
+                <span>{{ property.property_type }}</span>
+            </div>
+
+        </div>
+
+
+        <!-- PROPERTY INFORMATION -->
+
+        <div class="property-main-info">
+
+            <div class="property-type-row">
+
+                <span class="property-type-badge">
+                    {{ property.property_type }}
+                </span>
+
+                <span class="verified-badge">
+                    ✓ Recently Detected
+                </span>
+
+            </div>
+
+
+            <h2 class="property-price">
+                {{ property.price }}
+            </h2>
+
+
+            <div class="property-location-main">
+                <span class="location-icon">●</span>
+                <span>{{ property.location }}</span>
+            </div>
+
+
+            <div class="recent-information">
+
+                <div class="recent-title">
+                    <span class="check-icon">✓</span>
+                    <strong>Recent imagery verified</strong>
+                </div>
+
+                <p>
+                    This property advertisement was detected in recently
+                    updated imagery.
+                </p>
+
+            </div>
+
+
+            <!-- PROPERTY INFORMATION GRID -->
+
+            <div class="property-info-grid">
+
+                <div class="info-item">
+                    <span class="info-label">AREA</span>
+                    <strong>{{ property.area }}</strong>
+                </div>
+
+
+                <div class="info-item">
+                    <span class="info-label">BHK</span>
+                    <strong>{{ property.bhk }}</strong>
+                </div>
+
+
+                <div class="info-item">
+                    <span class="info-label">CAPTURE DATE</span>
+                    <strong>{{ property.capture_date }}</strong>
+                </div>
+
+
+                <div class="info-item">
+                    <span class="info-label">IMAGE AGE</span>
+                    <strong>{{ property.image_age }} days</strong>
+                </div>
+
+
+                <div class="info-item">
+                    <span class="info-label">LATITUDE</span>
+                    <strong>{{ property.latitude }}</strong>
+                </div>
+
+
+                <div class="info-item">
+                    <span class="info-label">LONGITUDE</span>
+                    <strong>{{ property.longitude }}</strong>
+                </div>
+
+            </div>
+
+
+            <div class="verification-note">
+                <strong>Note:</strong>
+                Current availability should be verified with the property
+                owner or seller.
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= LOCATION ================= -->
+
+    <section class="property-map-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="eyebrow">LOCATION</span>
+
+                <h2>Property Location</h2>
+
+                <p>
+                    View the detected property location on the map.
+                    Click the green marker to view property information.
+                </p>
+            </div>
+
+            <div class="map-legend">
+                <span class="legend-marker"></span>
+                Property location
+            </div>
+
+        </div>
+
+
+        <!-- MAP -->
+
+        <div class="map-card">
+
+            <div id="propertyMap"></div>
+
+        </div>
+
+    </section>
+
+</section>
+
+
+
+<!-- ========================================================= -->
+<!-- LEAFLET CSS -->
+<!-- ========================================================= -->
+
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+/>
+
+
+
+<!-- ========================================================= -->
+<!-- PROPERTY DETAILS PAGE STYLE -->
+<!-- ========================================================= -->
+
+<style>
+
+    /* =========================================================
+       MAIN PAGE
+    ========================================================= */
+
+    .property-details-page {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 50px 24px 70px;
+    }
+
+
+    /* =========================================================
+       PAGE HEADER
+    ========================================================= */
+
+    .property-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 30px;
+        margin-bottom: 32px;
+    }
+
+
+    .property-page-header h1 {
+        margin: 8px 0 10px;
+        color: #172033;
+        font-size: 42px;
+        line-height: 1.1;
+        font-weight: 750;
+        letter-spacing: -1px;
+    }
+
+
+    .property-page-header p {
+        margin: 0;
+        color: #687386;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+
+    .eyebrow {
+        display: inline-block;
+        color: #1f8a68;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+    }
+
+
+    /* =========================================================
+       RECENT BADGE
+    ========================================================= */
+
+    .recent-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 15px;
+        background: #edf8f3;
+        color: #176b52;
+        border: 1px solid #ccebdd;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #1f8a68;
+        border-radius: 50%;
+    }
+
+
+    /* =========================================================
+       MAIN PROPERTY CARD
+    ========================================================= */
+
+    .property-main-card {
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        background: #ffffff;
+        border: 1px solid #e7e9ed;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 10px 35px rgba(23, 32, 51, 0.07);
+    }
+
+
+    /* =========================================================
+       PROPERTY IMAGE
+    ========================================================= */
+
+    .property-image-container {
+        position: relative;
+        min-height: 480px;
+        background: #f1f2f3;
+        overflow: hidden;
+    }
+
+
+    .property-image-container img {
+        width: 100%;
+        height: 100%;
+        min-height: 480px;
+        object-fit: cover;
+        display: block;
+    }
+
+
+    .image-overlay {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+    }
+
+
+    .image-overlay span {
+        display: inline-block;
+        padding: 8px 13px;
+        background: rgba(23, 32, 51, 0.92);
+        color: #ffffff;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+    }
+
+
+    /* =========================================================
+       PROPERTY INFORMATION
+    ========================================================= */
+
+    .property-main-info {
+        padding: 38px 40px;
+    }
+
+
+    .property-type-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 20px;
+    }
+
+
+    .property-type-badge {
+        display: inline-flex;
+        padding: 7px 12px;
+        border-radius: 7px;
+        background: #eaf6f1;
+        color: #176b52;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+    }
+
+
+    .verified-badge {
+        display: inline-flex;
+        padding: 7px 12px;
+        border-radius: 7px;
+        background: #f4f5f7;
+        color: #596274;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    .property-price {
+        margin: 0 0 9px;
+        color: #172033;
+        font-size: 34px;
+        line-height: 1.15;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+
+    .property-location-main {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 26px;
+        color: #596274;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+
+    .location-icon {
+        color: #1f8a68;
+        font-size: 14px;
+    }
+
+
+    /* =========================================================
+       RECENT INFORMATION
+    ========================================================= */
+
+    .recent-information {
+        padding: 16px 17px;
+        margin-bottom: 27px;
+        background: #f2faf6;
+        border: 1px solid #d8eee4;
+        border-radius: 12px;
+    }
+
+
+    .recent-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #176b52;
+        font-size: 14px;
+    }
+
+
+    .check-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 21px;
+        height: 21px;
+        border-radius: 50%;
+        background: #1f8a68;
+        color: white;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+
+    .recent-information p {
+        margin: 8px 0 0 29px;
+        color: #617064;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       INFORMATION GRID
+    ========================================================= */
+
+    .property-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border-top: 1px solid #e8eaed;
+        border-left: 1px solid #e8eaed;
+    }
+
+
+    .info-item {
+        min-height: 74px;
+        padding: 14px 15px;
+        border-right: 1px solid #e8eaed;
+        border-bottom: 1px solid #e8eaed;
+    }
+
+
+    .info-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #8991a0;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+
+    .info-item strong {
+        color: #172033;
+        font-size: 14px;
+        font-weight: 700;
+        word-break: break-word;
+    }
+
+
+    /* =========================================================
+       VERIFICATION NOTE
+    ========================================================= */
+
+    .verification-note {
+        margin-top: 20px;
+        padding: 13px 15px;
+        border-left: 3px solid #d8dde3;
+        color: #737c8b;
+        font-size: 12px;
+        line-height: 1.55;
+    }
+
+
+    .verification-note strong {
+        color: #505a6b;
+    }
+
+
+    /* =========================================================
+       MAP SECTION
+    ========================================================= */
+
+    .property-map-section {
+        margin-top: 58px;
+    }
+
+
+    .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 25px;
+        margin-bottom: 20px;
+    }
+
+
+    .section-heading h2 {
+        margin: 7px 0 7px;
+        color: #172033;
+        font-size: 28px;
+        font-weight: 750;
+        letter-spacing: -0.5px;
+    }
+
+
+    .section-heading p {
+        margin: 0;
+        color: #687386;
+        font-size: 14px;
+        line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       MAP LEGEND
+    ========================================================= */
+
+    .map-legend {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 13px;
+        background: #ffffff;
+        border: 1px solid #e2e5e9;
+        border-radius: 8px;
+        color: #596274;
+        font-size: 12px;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+
+    .legend-marker {
+        width: 10px;
+        height: 10px;
+        background: #1f8a68;
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px #dff1e9;
+    }
+
+
+    /* =========================================================
+       MAP CARD
+    ========================================================= */
+
+    .map-card {
+        padding: 8px;
+        background: #ffffff;
+        border: 1px solid #e3e6ea;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(23, 32, 51, 0.06);
+    }
+
+
+    #propertyMap {
+        width: 100%;
+        height: 500px;
+        min-height: 500px;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #eeeeee;
+    }
+
+
+    /* =========================================================
+       POPUP
+    ========================================================= */
+
+    .property-popup {
+        width: 270px;
+        font-family: Arial, sans-serif;
+        line-height: 1.4;
+    }
+
+
+    .property-popup img {
+        width: 100%;
+        height: 150px;
+        object-fit: contain;
+        background: #f3f3f3;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+
+    .property-popup h3 {
+        margin: 5px 0 12px;
+        color: #172033;
+        font-size: 18px;
+    }
+
+
+    .property-popup p {
+        margin: 6px 0;
+        color: #333333;
+        font-size: 13px;
+    }
+
+
+    .property-popup strong {
+        color: #172033;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE DESIGN
+    ========================================================= */
+
+    @media (max-width: 850px) {
+
+        .property-page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+
+        .property-main-card {
+            grid-template-columns: 1fr;
+        }
+
+
+        .property-image-container,
+        .property-image-container img {
+            min-height: 360px;
+            height: 360px;
+        }
+
+
+        .section-heading {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .property-details-page {
+            padding: 35px 16px 55px;
+        }
+
+
+        .property-page-header h1 {
+            font-size: 32px;
+        }
+
+
+        .property-main-info {
+            padding: 27px 22px;
+        }
+
+
+        .property-price {
+            font-size: 28px;
+        }
+
+
+        .property-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+
+        .map-card {
+            padding: 5px;
+        }
+
+
+        #propertyMap {
+            height: 420px;
+            min-height: 420px;
+        }
+
+    }
+
+</style>
+
+
+
+<!-- ========================================================= -->
+<!-- PROPERTY DATA -->
+<!-- ========================================================= -->
+
+<div
+    id="propertyData"
+
+    data-latitude="{{ property.latitude }}"
+
+    data-longitude="{{ property.longitude }}"
+
+    data-image="{{ url_for('property_image', filename=property.image_name) }}"
+
+    data-type="{{ property.property_type }}"
+
+    data-price="{{ property.price }}"
+
+    data-location="{{ property.location }}"
+
+    data-area="{{ property.area }}"
+
+    data-bhk="{{ property.bhk }}"
+
+    data-date="{{ property.capture_date }}"
+
+    data-age="{{ property.image_age }}"
+></div>
+
+
+
+<!-- ========================================================= -->
+<!-- LEAFLET JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js">
+</script>
+
+
+
+<!-- ========================================================= -->
+<!-- MAP JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+window.addEventListener("load", function () {
+
+    console.log("Property map starting...");
+
+
+    /* ---------------------------------------------------------
+       GET PROPERTY DATA
+    --------------------------------------------------------- */
+
+    const propertyData =
+        document.getElementById("propertyData");
+
+
+    if (!propertyData) {
+
+        console.error("Property data element not found.");
+
+        return;
+
+    }
+
+
+    let latitude =
+        parseFloat(propertyData.dataset.latitude);
+
+
+    let longitude =
+        parseFloat(propertyData.dataset.longitude);
+
+
+    const image =
+        propertyData.dataset.image || "";
+
+
+    const propertyType =
+        propertyData.dataset.type || "Not detected";
+
+
+    const price =
+        propertyData.dataset.price || "Not detected";
+
+
+    const location =
+        propertyData.dataset.location || "Not detected";
+
+
+    const area =
+        propertyData.dataset.area || "Not detected";
+
+
+    const bhk =
+        propertyData.dataset.bhk || "Not detected";
+
+
+    const captureDate =
+        propertyData.dataset.date || "Not detected";
+
+
+    const imageAge =
+        propertyData.dataset.age || "Not detected";
+
+
+    /* ---------------------------------------------------------
+       GPS FALLBACK
+    --------------------------------------------------------- */
+
+    if (
+        Number.isNaN(latitude) ||
+        Number.isNaN(longitude)
+    ) {
+
+        console.warn(
+            "Invalid GPS coordinates. Using fallback location."
+        );
+
+        latitude = 17.3850;
+
+        longitude = 78.4867;
+
+    }
+
+
+    /* ---------------------------------------------------------
+       CHECK LEAFLET
+    --------------------------------------------------------- */
+
+    if (typeof L === "undefined") {
+
+        console.error(
+            "Leaflet could not be loaded."
+        );
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------------------
+       CREATE MAP
+    --------------------------------------------------------- */
+
+    const map =
+        L.map("propertyMap");
+
+
+    map.setView(
+        [latitude, longitude],
+        15
+    );
+
+
+    /* ---------------------------------------------------------
+       OPEN STREET MAP
+    --------------------------------------------------------- */
+
+    L.tileLayer(
+
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+        {
+
+            maxZoom: 19,
+
+            attribution:
+                "&copy; OpenStreetMap contributors"
+
+        }
+
+    ).addTo(map);
+
+
+    /* ---------------------------------------------------------
+       GREEN PROPERTY MARKER
+    --------------------------------------------------------- */
+
+    const greenIcon = L.divIcon({
+
+        className: "",
+
+        html: `
+            <div style="
+                width:24px;
+                height:24px;
+                background:#1f8a68;
+                border:3px solid white;
+                border-radius:50% 50% 50% 0;
+                transform:rotate(-45deg);
+                box-shadow:0 2px 7px rgba(0,0,0,0.4);
+            ">
+
+                <div style="
+                    width:8px;
+                    height:8px;
+                    background:white;
+                    border-radius:50%;
+                    margin:8px;
+                "></div>
+
+            </div>
+        `,
+
+        iconSize: [30, 30],
+
+        iconAnchor: [15, 30],
+
+        popupAnchor: [0, -30]
+
+    });
+
+
+    /* ---------------------------------------------------------
+       CREATE PROPERTY MARKER
+    --------------------------------------------------------- */
+
+    const marker = L.marker(
+
+        [latitude, longitude],
+
+        {
+            icon: greenIcon
+        }
+
+    ).addTo(map);
+
+
+    /* ---------------------------------------------------------
+       POPUP CONTENT
+    --------------------------------------------------------- */
+
+    const popupContent = `
+
+        <div class="property-popup">
+
+            <img
+                src="${image}"
+                alt="Property Advertisement"
+            >
+
+
+            <h3>
+                Property Details
+            </h3>
+
+
+            <p>
+                <strong>Type:</strong>
+                ${propertyType}
+            </p>
+
+
+            <p>
+                <strong>Price:</strong>
+                ${price}
+            </p>
+
+
+            <p>
+                <strong>Location:</strong>
+                ${location}
+            </p>
+
+
+            <p>
+                <strong>Area:</strong>
+                ${area}
+            </p>
+
+
+            <p>
+                <strong>BHK:</strong>
+                ${bhk}
+            </p>
+
+
+            <p>
+                <strong>Capture Date:</strong>
+                ${captureDate}
+            </p>
+
+
+            <p>
+                <strong>Image Age:</strong>
+                ${imageAge} days
+            </p>
+
+
+            <p>
+                <strong>Latitude:</strong>
+                ${latitude}
+            </p>
+
+
+            <p>
+                <strong>Longitude:</strong>
+                ${longitude}
+            </p>
+
+        </div>
+
+    `;
+
+
+    /* ---------------------------------------------------------
+       CONNECT POPUP TO GREEN MARKER
+    --------------------------------------------------------- */
+
+    marker.bindPopup(
+
+        popupContent,
+
+        {
+
+            maxWidth: 300,
+
+            closeButton: true
+
+        }
+
+    );
+
+
+    /* ---------------------------------------------------------
+       FIX MAP DISPLAY
+    --------------------------------------------------------- */
+
+    setTimeout(function () {
+
+        map.invalidateSize();
+
+    }, 500);
+
+
+    console.log(
+        "Property map loaded successfully."
+    );
+
+});
+
+</script>
+
+
+{% endblock %}

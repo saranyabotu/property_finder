@@ -1,0 +1,21 @@
+image_name,property_type,price,area,bhk,location,capture_date,latitude,longitude
+image_001.png,UNKNOWN,22 LAKH,1000 sq.ft,Not detected,Vizianagaram,2026-09-19,18.2949,83.8938
+image_002.png,FOR SALE,47 LAKH,Not detected,Not detected,Nelamangala,2026-09-18,18.2955,83.8942
+image_003.png,FOR RENT,Not detected,Not detected,3 BHK,Puppalaguda,2026-09-17,17.4319,78.4075
+image_004.png,FOR RENT,₹3,Not detected,3 BHK,Karelibaug,2026-09-15,22.3072,73.1812
+image_005.png,FOR SALE,75 LAKH,Not detected,Not detected,Not detected,2026-09-14,18.5204,73.8567
+image_006.png,UNKNOWN,Not detected,Not detected,Not detected,Not detected,2026-09-12,16.5062,80.648
+image_007.png,UNKNOWN,Not detected,Not detected,2 BHK,Maruthi Nagar,2026-09-10,16.2927,80.4375
+image_008.png,UNKNOWN,Not detected,Not detected,Not detected,Mumtlret Eagesrnnns BEdrdoMs bathroOVS KITCHENS Ful,2026-09-05,17.385,78.4867
+image_009.png,UNKNOWN,Not detected,Not detected,Not detected,Not detected,2026-08-30,13.0827,80.2707
+image_010.png,FOR RENT,Not detected,Not detected,2 BHK,Loyola school for,2026-08-25,12.9716,77.5946
+image_011.png,UNKNOWN,Not detected,Not detected,Not detected,Not detected,2026-08-20,17.6868,83.2185
+image_012.png,UNKNOWN,Not detected,Not detected,1 BHK,Mookandapalli,2026-08-15,11.0168,76.9558
+image_013.png,FOR RENT,Not detected,Not detected,Not detected,RK beach,2026-08-10,16.5062,80.648
+image_014.png,UNKNOWN,Not detected,Not detected,Not detected,Not detected,2026-07-25,15.9129,79.74
+image_003_20260923191201.png,FOR RENT,Not detected,Not detected,3 BHK,Puppalaguda,2026-09-17,17.4319,78.4075
+new_house.png,FOR SALE,Not detected,Not detected,2 BHK,Not detected,2026-09-23,17.41,78.42
+new_house_test.png,FOR RENT,₹811,900 sq.ft,3 BHK,Manikonda,2026-09-24,17.41,78.42
+updated_home.png,FOR SALE,Not detected,Not detected,Not detected,Not detected,2026-09-24,Not available,Not available
+hyd_home.png,FOR RENT,₹60,Not detected,3 BHK,Manikonda,2026-09-24,17.41,78.42
+sample_house.png,FOR RENT,Not detected,Not detected,3 BHK,Not detected,2026-09-25,Not available,Not available

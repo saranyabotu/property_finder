@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}
+Recent Properties | PropertyFinder AI
+{% endblock %}
+
+{% block content %}
+
+<section class="recent-page">
+
+    <!-- HEADER -->
+    <div class="recent-header">
+
+        <div>
+            <span class="eyebrow">RECENT DISCOVERY</span>
+
+            <h1>Recently discovered properties.</h1>
+
+            <p>
+                Explore property advertisements identified from
+                recently updated imagery.
+            </p>
+        </div>
+
+        <div class="recent-status">
+            <span class="recent-status-dot"></span>
+            Recent imagery only
+        </div>
+
+    </div>
+
+
+    {% if recent_properties %}
+
+    <!-- SUMMARY -->
+    <div class="recent-summary">
+
+        <div>
+            <span class="eyebrow">AVAILABLE PROPERTIES</span>
+
+            <h2>
+                {{ recent_properties|length }}
+
+                {% if recent_properties|length == 1 %}
+                    Property
+                {% else %}
+                    Properties
+                {% endif %}
+            </h2>
+        </div>
+
+        <a href="/search" class="recent-search-btn">
+            Search Properties →
+        </a>
+
+    </div>
+
+
+    <!-- PROPERTY GRID -->
+    <div class="recent-property-grid">
+
+        {% for property in recent_properties %}
+
+        <article class="recent-property-card">
+
+            <!-- IMAGE -->
+            <div class="recent-image-wrapper">
+
+                <img
+                    src="{{ url_for(
+                        'property_image',
+                        filename=property.image_name
+                    ) }}"
+                    alt="Property Advertisement"
+                >
+
+                <div class="recent-image-badges">
+
+                    <span class="recent-type-badge">
+                        {{ property.property_type | upper }}
+                    </span>
+
+                    <span class="recent-badge-new">
+                        ● Recent
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTENT -->
+            <div class="recent-card-content">
+
+                <div class="recent-location-label">
+                    LOCATION
+                </div>
+
+                <h3>
+                    {{ property.location | title }}
+                </h3>
+
+
+                <!-- PRICE -->
+                <div class="recent-price-box">
+
+                    <span>PROPERTY PRICE</span>
+
+                    <strong>
+                        {{ property.price }}
+                    </strong>
+
+                </div>
+
+
+                <!-- DETAILS -->
+                <div class="recent-details">
+
+                    <div>
+                        <span>AREA</span>
+                        <strong>
+                            {{ property.area }}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>BHK</span>
+                        <strong>
+                            {{ property.bhk }}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>CAPTURED</span>
+                        <strong>
+                            {{ property.capture_date }}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>IMAGE AGE</span>
+                        <strong>
+                            {{ property.age_days }} days
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <!-- RECENCY STATUS -->
+                <div class="recent-verified">
+
+                    <span>✓</span>
+
+                    <div>
+                        <strong>Recent Imagery Verified</strong>
+
+                        <p>
+                            Advertisement observed within the
+                            configured recent-imagery period.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+                <a
+                    href="{{ url_for(
+                        'property_details',
+                        image_name=property.image_name
+                    ) }}"
+                    class="recent-view-btn"
+                >
+                    View Property Details
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- MAP -->
+    {% if recent_map_available %}
+
+    <section class="recent-map-card">
+
+        <div class="recent-map-header">
+
+            <div>
+                <span class="eyebrow">LOCATION MAP</span>
+
+                <h2>Recent Property Locations</h2>
+
+                <p>
+                    Geographic locations of recently detected
+                    property advertisements.
+                </p>
+            </div>
+
+            <div class="map-location-count">
+                📍 {{ recent_properties|length }} locations
+            </div>
+
+        </div>
+
+
+        <iframe
+            class="recent-map-frame"
+            src="{{ url_for(
+                'static',
+                filename='recent_properties_map.html'
+            ) }}"
+            title="Recent Property Locations">
+        </iframe>
+
+    </section>
+
+    {% endif %}
+
+
+    {% else %}
+
+    <!-- EMPTY STATE -->
+    <div class="recent-empty">
+
+        <div class="recent-empty-icon">
+            ⌖
+        </div>
+
+        <span class="eyebrow">NO RECENT PROPERTIES</span>
+
+        <h2>No recent properties available</h2>
+
+        <p>
+            No property advertisements are currently available
+            within the configured recent-imagery period.
+        </p>
+
+        <a href="/search" class="recent-empty-btn">
+            Search Properties
+            <span>→</span>
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

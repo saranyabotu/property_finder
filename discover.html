@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Discover Property | PropertyFinder AI{% endblock %}
+
+{% block content %}
+
+<section class="discover-page">
+
+    <!-- PAGE HEADER -->
+    <div class="discover-header">
+        <span class="eyebrow">PROPERTY DISCOVERY</span>
+
+        <h1>Discover a Property</h1>
+
+        <p>
+            Upload a property advertisement image to identify and extract
+            available property information.
+        </p>
+    </div>
+
+
+    <!-- UPLOAD SECTION -->
+    <div class="discover-upload-card">
+
+        <div class="upload-card-top">
+            <div>
+                <h2>Upload Property Image</h2>
+
+                <p>
+                    Select an image containing a property advertisement.
+                </p>
+            </div>
+
+            <span class="status-pill">AI Enabled</span>
+        </div>
+
+
+        <form method="POST"
+              action="{{ url_for('upload') }}"
+              enctype="multipart/form-data">
+
+            <label for="image" class="large-upload-area">
+
+                <div class="upload-symbol">
+                    ↑
+                </div>
+
+                <h3>Choose an image to analyze</h3>
+
+                <p>
+                    Click here to select a property advertisement image
+                </p>
+
+                <span class="upload-select-btn">
+                    Choose Image
+                </span>
+
+                <small id="selected-file">
+                    PNG, JPG or JPEG
+                </small>
+
+            </label>
+
+            <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                required
+                onchange="showSelectedFile(this)"
+            >
+
+
+            <!-- INFORMATION -->
+            <div class="discover-info">
+
+                <div class="discover-info-item">
+                    <span class="info-check">✓</span>
+                    <div>
+                        <strong>Advertisement Detection</strong>
+                        <p>Detects property advertisements from imagery.</p>
+                    </div>
+                </div>
+
+                <div class="discover-info-item">
+                    <span class="info-check">✓</span>
+                    <div>
+                        <strong>Information Extraction</strong>
+                        <p>Extracts price, area, BHK and location.</p>
+                    </div>
+                </div>
+
+                <div class="discover-info-item">
+                    <span class="info-check">✓</span>
+                    <div>
+                        <strong>Location Mapping</strong>
+                        <p>Associates the property with location data.</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ACTION -->
+            <div class="discover-action">
+
+                <span>
+                    Your property information will be analyzed automatically.
+                </span>
+
+                <button type="submit" class="discover-analyze-btn">
+                    Analyze Property
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- ERROR -->
+    {% if error %}
+
+    <div class="discover-error">
+        <strong>Analysis Error</strong>
+        <p>{{ error }}</p>
+    </div>
+
+    {% endif %}
+
+
+    <!-- RESULT -->
+    {% if result %}
+
+    <div class="discover-result-card">
+
+        <div class="result-header">
+
+            <div>
+                <span class="eyebrow">ANALYSIS RESULT</span>
+                <h2>Property Information</h2>
+            </div>
+
+            <span class="status-pill success">
+                ✓ Detected
+            </span>
+
+        </div>
+
+
+        <div class="result-content">
+
+            <div class="result-image">
+                <img
+                    src="{{ url_for('uploaded_image', filename=result.image_name) }}"
+                    alt="Property Advertisement"
+                >
+            </div>
+
+
+            <div class="result-information">
+
+                <div class="result-item">
+                    <span>Property Type</span>
+                    <strong>{{ result.property_type }}</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>Price</span>
+                    <strong>{{ result.price }}</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>Area</span>
+                    <strong>{{ result.area }}</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>BHK</span>
+                    <strong>{{ result.bhk }}</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>Location</span>
+                    <strong>{{ result.location }}</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>Capture Date</span>
+                    <strong>{{ result.capture_date }}</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>Latitude</span>
+                    <strong>{{ result.latitude }}</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>Longitude</span>
+                    <strong>{{ result.longitude }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="result-verified">
+            <strong>✓ Recent Imagery Verified</strong>
+
+            <p>
+                The property advertisement was detected in recently
+                updated imagery and the available information has been
+                stored in the property database.
+            </p>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+
+<script>
+function showSelectedFile(input) {
+
+    const fileDisplay = document.getElementById("selected-file");
+
+    if (input.files && input.files.length > 0) {
+        fileDisplay.textContent = input.files[0].name;
+        fileDisplay.classList.add("selected");
+    } else {
+        fileDisplay.textContent = "PNG, JPG or JPEG";
+        fileDisplay.classList.remove("selected");
+    }
+}
+</script>
+
+{% endblock %}

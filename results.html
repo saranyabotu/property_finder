@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results | PropertyFinder AI{% endblock %}
+
+{% block content %}
+
+<section class="results-page">
+
+    <!-- HEADER -->
+    <div class="results-header">
+
+        <div>
+            <span class="eyebrow">SEARCH RESULTS</span>
+
+            <h1>Properties matching your search.</h1>
+
+            <p>
+                Explore property advertisements identified from
+                recently updated imagery.
+            </p>
+        </div>
+
+        <a href="/search" class="results-modify-btn">
+            Modify Search
+        </a>
+
+    </div>
+
+
+    {% if properties %}
+
+    <!-- RESULT SUMMARY -->
+    <div class="results-summary">
+
+        <div>
+            <span class="eyebrow">MATCHED PROPERTIES</span>
+
+            <h2>
+                {{ properties|length }}
+                {% if properties|length == 1 %}
+                    Property
+                {% else %}
+                    Properties
+                {% endif %}
+                Found
+            </h2>
+        </div>
+
+        <div class="results-summary-note">
+            <span>✓</span>
+            Recent imagery
+        </div>
+
+    </div>
+
+
+    <!-- PROPERTY GRID -->
+    <div class="professional-property-grid">
+
+        {% for property in properties %}
+
+        <article class="professional-property-card">
+
+            <!-- IMAGE -->
+            <div class="property-card-image">
+
+                <img
+                    src="{{ url_for('property_image', filename=property.image_name) }}"
+                    alt="Property advertisement"
+                >
+
+                <div class="image-badges">
+
+                    <span class="property-type-badge">
+                        {{ property.property_type }}
+                    </span>
+
+                    <span class="recent-property-badge">
+                        ● Recent
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTENT -->
+            <div class="professional-property-content">
+
+                <div class="property-heading">
+
+                    <div>
+                        <span class="property-label">
+                            LOCATION
+                        </span>
+
+                        <h3>
+                            {{ property.location }}
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <!-- PRICE -->
+                <div class="property-price-box">
+
+                    <span>PROPERTY PRICE</span>
+
+                    <strong>
+                        {{ property.price }}
+                    </strong>
+
+                </div>
+
+
+                <!-- DETAILS -->
+                <div class="property-details-row">
+
+                    <div class="property-detail">
+
+                        <span>AREA</span>
+
+                        <strong>
+                            {{ property.area }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="property-detail">
+
+                        <span>BHK</span>
+
+                        <strong>
+                            {{ property.bhk }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="property-detail">
+
+                        <span>CAPTURED</span>
+
+                        <strong>
+                            {{ property.capture_date }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTION -->
+                <a
+                    href="{{ url_for('property_details_page', image_name=property.image_name) }}"
+                    class="property-view-btn"
+                >
+                    View Property Details
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- EMPTY STATE -->
+    <div class="professional-empty-state">
+
+        <div class="empty-icon">
+            ⌕
+        </div>
+
+        <span class="eyebrow">NO MATCHES</span>
+
+        <h2>No properties found</h2>
+
+        <p>
+            We couldn't find a property matching your selected
+            search criteria. Try changing the location, property
+            type, price or imagery-age limit.
+        </p>
+
+        <a href="/search" class="empty-search-btn">
+            Modify Search
+            <span>→</span>
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

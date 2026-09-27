@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Search Properties | PropertyFinder AI{% endblock %}
+
+{% block content %}
+
+<section class="search-page">
+
+    <!-- HEADER -->
+    <div class="search-header">
+
+        <span class="eyebrow">PROPERTY SEARCH</span>
+
+        <h1>Find your next property.</h1>
+
+        <p>
+            Search recently identified properties using location,
+            property type, price and imagery recency.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH CARD -->
+    <div class="search-card">
+
+        <div class="search-card-header">
+
+            <div>
+                <h2>Search Properties</h2>
+
+                <p>
+                    Enter your requirements to find matching properties.
+                </p>
+            </div>
+
+            <div class="search-icon">
+               ⌕
+            </div>
+
+        </div>
+
+
+        <form method="GET" action="/results">
+
+            <!-- LOCATION -->
+            <div class="search-location">
+
+                <label for="location">
+                    Location
+                </label>
+
+                <div class="location-input">
+
+                    <span>⌖</span>
+
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        placeholder="Enter city, area or locality"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- FILTERS -->
+            <div class="search-filters">
+
+                <!-- PROPERTY TYPE -->
+                <div class="search-field">
+
+                    <label for="property_type">
+                        Property Type
+                    </label>
+
+                    <select
+                        id="property_type"
+                        name="property_type"
+                        required
+                    >
+                        <option value="">Select type</option>
+                        <option value="FOR SALE">For Sale</option>
+                        <option value="FOR RENT">For Rent</option>
+                    </select>
+
+                </div>
+
+
+                <!-- MAX PRICE -->
+                <div class="search-field">
+
+                    <label for="max_price">
+                        Maximum Price
+                    </label>
+
+                    <div class="price-input">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="max_price"
+                            name="max_price"
+                            placeholder="Example: 5000000"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAX AGE -->
+                <div class="search-field">
+
+                    <label for="max_age">
+                        Imagery Age
+                    </label>
+
+                    <div class="age-input">
+
+                        <input
+                            type="number"
+                            id="max_age"
+                            name="max_age"
+                            value="30"
+                            min="1"
+                            max="365"
+                            required
+                        >
+
+                        <span>days</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HELP TEXT -->
+            <div class="search-note">
+
+                <span>✓</span>
+
+                <p>
+                    Results are limited to property advertisements
+                    detected within the selected imagery age.
+                </p>
+
+            </div>
+
+
+            <!-- SEARCH BUTTON -->
+            <div class="search-action">
+
+                <button
+                    type="submit"
+                    class="search-submit-btn"
+                >
+                    Search Properties
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- SEARCH FEATURES -->
+    <div class="search-features">
+
+        <div class="search-feature">
+
+            <div class="feature-symbol">⌖</div>
+
+            <div>
+                <strong>Location Based</strong>
+                <p>
+                    Search properties available in a specific area.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="search-feature">
+
+            <div class="feature-symbol">₹</div>
+
+            <div>
+                <strong>Price Filter</strong>
+                <p>
+                    Set the maximum property price for your search.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="search-feature">
+
+            <div class="feature-symbol">◷</div>
+
+            <div>
+                <strong>Recent Imagery</strong>
+                <p>
+                    Focus your search on recently captured imagery.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

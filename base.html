@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}
+        PropertyFinder AI
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <div class="navbar">
+
+        <!-- BRAND -->
+        <a
+            href="{{ url_for('home') }}"
+            class="brand"
+        >
+            <span class="brand-mark">P</span>
+
+            <span>
+                Property<span class="brand-accent">Finder</span>
+                <span class="brand-ai">AI</span>
+            </span>
+        </a>
+
+
+        <!-- NAVIGATION -->
+        <nav class="nav-links">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-link"
+            >
+                Home
+            </a>
+
+            <a
+                href="{{ url_for('discover') }}"
+                class="nav-link"
+            >
+                Discover
+            </a>
+
+            <a
+                href="/search"
+                class="nav-link"
+            >
+                Search
+            </a>
+
+            <a
+                href="{{ url_for('recent') }}"
+                class="nav-link"
+            >
+                Recent
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- MAIN CONTENT -->
+
+<main>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="site-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            PropertyFinder AI
+        </div>
+
+        <p>
+            AI-assisted property advertisement discovery
+            from recently updated imagery.
+        </p>
+
+        <div class="footer-line"></div>
+
+        <span>
+            Property Discovery System
+        </span>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,502 @@
+{% extends "base.html" %}
+
+{% block title %}
+PropertyFinder AI | Property Discovery
+{% endblock %}
+
+{% block content %}
+
+<!-- =====================================================
+     HERO SECTION
+     ===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <!-- HERO LEFT -->
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                AI-POWERED PROPERTY DISCOVERY
+            </div>
+
+            <h1>
+                Discover properties
+                <span>without the search.</span>
+            </h1>
+
+            <p class="hero-copy">
+                PropertyFinder AI analyzes recently updated imagery
+                to identify property advertisements, extract visible
+                details and connect them with geographic locations.
+            </p>
+
+            <div class="hero-actions">
+
+                <a
+                    href="{{ url_for('discover') }}"
+                    class="btn btn-primary"
+                >
+                    Discover a Property
+                </a>
+
+                <a
+                    href="{{ url_for('search_page') }}"
+                    class="btn btn-light"
+                >
+                    Search Properties
+                </a>
+
+            </div>
+
+            <div class="hero-note">
+                Built for faster property discovery using AI,
+                OCR and location-based mapping.
+            </div>
+
+        </div>
+
+
+        <!-- HERO RIGHT -->
+
+        <div class="hero-card">
+
+            <div class="hero-card-top">
+
+                <div>
+                    <span class="preview-label">
+                        PROPERTY DETECTION
+                    </span>
+
+                    <div class="preview-title">
+                        Recent Advertisement
+                    </div>
+                </div>
+
+                <span class="live">
+                    RECENT
+                </span>
+
+            </div>
+
+
+            <div class="hero-property-image">
+
+                <div class="preview-overlay">
+
+                    <div class="preview-dot"></div>
+
+                    <span>
+                        Property advertisement detected
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-property-info">
+
+                <div class="hero-property-row">
+
+                    <span class="hero-property-type">
+                        FOR SALE
+                    </span>
+
+                    <span class="preview-status">
+                        Recently updated
+                    </span>
+
+                </div>
+
+                <div class="hero-property-price">
+                    ₹47 Lakh
+                </div>
+
+                <div class="hero-property-location">
+                    Nelamangala
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TECHNOLOGY STRIP
+     ===================================================== -->
+
+<section class="stats">
+
+    <div class="stats-inner">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Advertisement Detection
+            </div>
+
+            <div class="stat-value">
+                YOLO
+            </div>
+
+            <p class="stat-description">
+                Identifies visible property advertisements
+                in imagery.
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Property Information
+            </div>
+
+            <div class="stat-value">
+                OCR
+            </div>
+
+            <p class="stat-description">
+                Extracts text such as price, BHK and location.
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Geographic Discovery
+            </div>
+
+            <div class="stat-value">
+                GPS Mapping
+            </div>
+
+            <p class="stat-description">
+                Connects detected properties with map locations.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+
+<div class="page">
+
+
+    <!-- SECTION INTRO -->
+
+    <div class="section-heading">
+
+        <div class="section-eyebrow">
+            PROPERTY DISCOVERY PLATFORM
+        </div>
+
+        <h2>
+            Everything you need to discover
+            advertised properties.
+        </h2>
+
+        <p>
+            Move from imagery to searchable property information
+            through a simple AI-assisted workflow.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         MODULES
+         ================================================= -->
+
+    <div class="feature-grid">
+
+
+        <!-- DISCOVER -->
+
+        <a
+            href="{{ url_for('discover') }}"
+            class="feature-card"
+        >
+
+            <div class="feature-top">
+
+                <span class="feature-number">
+                    01
+                </span>
+
+                <span class="feature-arrow">
+                    →
+                </span>
+
+            </div>
+
+            <h3>
+                Discover Property
+            </h3>
+
+            <p>
+                Upload an image and let the system analyze it
+                for property advertisements and visible details.
+            </p>
+
+            <div class="feature-link">
+                Start discovery →
+            </div>
+
+        </a>
+
+
+        <!-- SEARCH -->
+
+        <a
+            href="{{ url_for('search_page') }}"
+            class="feature-card"
+        >
+
+            <div class="feature-top">
+
+                <span class="feature-number">
+                    02
+                </span>
+
+                <span class="feature-arrow">
+                    →
+                </span>
+
+            </div>
+
+            <h3>
+                Search Properties
+            </h3>
+
+            <p>
+                Find properties using location, property type,
+                price and imagery-age filters.
+            </p>
+
+            <div class="feature-link">
+                Search database →
+            </div>
+
+        </a>
+
+
+        <!-- RECENT -->
+
+        <a
+            href="{{ url_for('recent_properties') }}"
+            class="feature-card"
+        >
+
+            <div class="feature-top">
+
+                <span class="feature-number">
+                    03
+                </span>
+
+                <span class="feature-arrow">
+                    →
+                </span>
+
+            </div>
+
+            <h3>
+                Recent Properties
+            </h3>
+
+            <p>
+                Explore properties identified from recently
+                updated imagery in the system.
+            </p>
+
+            <div class="feature-link">
+                View recent listings →
+            </div>
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         WORKFLOW
+         ================================================= -->
+
+    <section class="workflow-section">
+
+        <div class="section-heading compact">
+
+            <div class="section-eyebrow">
+                SYSTEM WORKFLOW
+            </div>
+
+            <h2>
+                From imagery to property location.
+            </h2>
+
+            <p>
+                Four connected stages turn visual information
+                into searchable property data.
+            </p>
+
+        </div>
+
+
+        <div class="workflow-grid">
+
+
+            <div class="workflow-step">
+
+                <div class="workflow-number">
+                    01
+                </div>
+
+                <div>
+
+                    <h3>
+                        Recent Imagery
+                    </h3>
+
+                    <p>
+                        The system accepts recently updated
+                        property imagery.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="workflow-step">
+
+                <div class="workflow-number">
+                    02
+                </div>
+
+                <div>
+
+                    <h3>
+                        AI Detection
+                    </h3>
+
+                    <p>
+                        YOLO identifies visible property
+                        advertisements.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="workflow-step">
+
+                <div class="workflow-number">
+                    03
+                </div>
+
+                <div>
+
+                    <h3>
+                        OCR Extraction
+                    </h3>
+
+                    <p>
+                        Text is extracted and structured into
+                        useful property information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="workflow-step">
+
+                <div class="workflow-number">
+                    04
+                </div>
+
+                <div>
+
+                    <h3>
+                        Location Mapping
+                    </h3>
+
+                    <p>
+                        Property information is connected with
+                        geographic coordinates.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         FINAL CTA
+         ================================================= -->
+
+    <section class="home-cta">
+
+        <div>
+
+            <div class="section-eyebrow">
+                READY TO EXPLORE?
+            </div>
+
+            <h2>
+                Start discovering properties.
+            </h2>
+
+            <p>
+                Upload a property image or search the existing
+                property database.
+            </p>
+
+        </div>
+
+
+        <div class="home-cta-actions">
+
+            <a
+                href="{{ url_for('discover') }}"
+                class="btn btn-primary"
+            >
+                Discover Property
+            </a>
+
+            <a
+                href="{{ url_for('search_page') }}"
+                class="btn btn-outline"
+            >
+                Search Properties
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
